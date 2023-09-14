@@ -15,12 +15,10 @@ export function createTargetable() {
         TargetableElement, Map<string, Element | Element[] | null>
     >();
 
-    const query = Symbol();
-
-
     function targetable<
         T extends Constructor<TargetableElement>
     >(ctr: T): T {
+        const query = Symbol();
         // @targetable <- class
         // @target <- props
         return class extends ctr {

@@ -93,7 +93,7 @@ customElements.define("user-row", UserRowElement);
 @actionable
 export class FollowUserElement extends HTMLElement {
     followUser() {
-        console.log("follow");
+        alert("follow");
     }
 
     connectedCallback() {
@@ -104,7 +104,7 @@ customElements.define("follow-user", FollowUserElement);
 @actionable
 export class BlockUserElement extends HTMLElement {
     blockUser() {
-        console.log("block");
+        alert("block");
     }
 
     connectedCallback() {

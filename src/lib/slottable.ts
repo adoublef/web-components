@@ -15,13 +15,14 @@ export function createSlottable() {
         SlottableElement, Map<string | symbol, Element | null>
     >();
 
-    const query = Symbol();
 
     const mainSlot = Symbol();
 
     function slottable<
         T extends Constructor<SlottableElement>
     >(ctr: T) {
+        const query = Symbol();
+
         return class extends ctr {
             constructor(...args: any[]) {
                 super(...args);
