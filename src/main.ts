@@ -65,7 +65,7 @@ class CAElement extends HTMLElement {
     }
 }
 customElements.define("c-a", CAElement);
-/* ******************************************************************** */
+/* **** DEMO ********************************************************** */
 const baseContext = new AudioContext({ latencyHint: "interactive" });
 @actionable
 @forable
