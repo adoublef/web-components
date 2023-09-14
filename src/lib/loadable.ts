@@ -42,8 +42,9 @@ export function loadable<
                     priority: this.fetchpriority || "auto",
                     method: "get"
                 });
-                await this.load(res);
+
                 this.dispatchEvent(new Event("load"));
+                await this.load(res);
             } catch (error) {
                 this.dispatchEvent(new Event("error"));
             } finally {
@@ -57,12 +58,11 @@ export function loadable<
         }
 
         attributeChangedCallback(name: string, currentValue?: string, value?: string) {
-            // @ts-ignore will need to type-check this
-            super.attributeChangedCallback?.(name, currentValue, value);
-
             if (name === "src" && value) {
                 this.__load(value);
             }
+            // @ts-ignore will need to type-check this
+            super.attributeChangedCallback?.(name, currentValue, value);
         }
     };
 }

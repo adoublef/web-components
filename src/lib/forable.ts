@@ -38,12 +38,11 @@ export function forable<
         }
 
         attributeChangedCallback(name: string, currentValue?: string, value?: string) {
-            // @ts-ignore will need to type-check this
-            super.attributeChangedCallback?.(name, currentValue, value);
-
             if (name === "for" && value) {
                 this.__htmlFor(value);
             }
+            // @ts-ignore will need to type-check this
+            super.attributeChangedCallback?.(name, currentValue, value);
         }
     };
 }
