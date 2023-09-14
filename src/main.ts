@@ -8,18 +8,12 @@ export class ABElement extends HTMLElement {
     followUser() {
         alert("a-b");
     }
-
-    connectedCallback() {
-    }
 }
 customElements.define("a-b", ABElement);
 @actionable
 export class ACElement extends HTMLElement {
     blockUser() {
         alert("a-c");
-    }
-
-    connectedCallback() {
     }
 }
 customElements.define("a-c", ACElement);
