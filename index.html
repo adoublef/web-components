@@ -9,22 +9,51 @@
 </head>
 
 <body>
-    <effect-plugin>
-        <template shadowRootMode="open">
-            <input type="range">
-            <output><code data-target>000</code></output>
-        </template>
-    </effect-plugin>
+    <section>
+        <effect-plugin id="gain">
+            <template shadowRootMode="open">
+                <input type="range">
+                <output><code data-target>000</code></output>
+            </template>
+        </effect-plugin>
+        <hr>
+        <audio-clip src="/snare.wav" for="gain">
+            <template shadowRootMode="open">
+                <button data-action="click">play</button>
+            </template>
+        </audio-clip>
+    </section>
     <hr>
-    <audio-clip src="/snare.wav">
-        <template shadowRootMode="open">
-            <button data-action="click">play</button>
-        </template>
-    </audio-clip>
+    <section>
+        <user-row>
+            <template shadowRootMode="open">
+                <follow-user>
+                    <template shadowRootMode="open">
+                        <button data-action="click.followUser">follow</button>
+                    </template>
+                </follow-user>
+                <block-user>
+                    <template shadowRootMode="open">
+                        <button data-action="click.block-user">block</button>
+                    </template>
+                </block-user>
+            </template>
+        </user-row>
+    </section>
     <hr>
-    <div id="a">
-        <p>I am identable</p>
-    </div>
+    <section>
+        <p>Example of the <code>slottable</code> ability</p>
+        <hello-world>
+            <template shadowRootMode="open">
+                <slot name="greeting"></slot>
+                <p>We have <span data-target>0</span> greeting</p>
+            </template>
+            <!-- light dom -->
+            <p slot="greeting">Hello World!</p>
+            <p slot="greeting">Hola Mundo!</p>
+            <p slot="greeting">Bonjour le monde!</p>
+        </hello-world>
+    </section>
     <script type="module" src="/src/polyfil.ts"></script>
     <script type="module" src="/src/main.ts"></script>
 </body>
