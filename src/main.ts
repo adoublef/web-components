@@ -26,10 +26,6 @@ export class HelloWorldElement extends HTMLElement {
         console.log(element);
     }
 
-    greet() {
-        alert("greet");
-    }
-
     handleEvent() {
         const { buffer } = this;
         const sample = new AudioBufferSourceNode(baseContext, { buffer });
