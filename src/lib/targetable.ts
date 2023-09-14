@@ -7,17 +7,19 @@ interface Constructor<T> {
     new(...args: any[]): T;
 }
 
-declare global {
-    interface Targetable extends HTMLElement {
-    }
+interface TargetableElement extends HTMLElement {
 }
+
 export function createTargetable() {
     const metadata = new WeakMap<
-        Targetable, Map<string, Element | null>
+        TargetableElement, Map<string, Element | Element[] | null>
     >();
 
+    const query = Symbol();
+
+
     function targetable<
-        T extends Constructor<Targetable>
+        T extends Constructor<TargetableElement>
     >(ctr: T): T {
         // @targetable <- class
         // @target <- props
@@ -26,21 +28,22 @@ export function createTargetable() {
                 super(...args);
             }
 
-            __queryElements() {
+            [query]() {
                 if (!metadata.has(this)) {
                     metadata.set(this, new Map());
                 }
                 // NOTE -- matches [data-target] & [data-target=key]
-                const elements = this.shadowRoot?.querySelectorAll<HTMLElement>("[data-target]");
-                for (const element of (elements || [])) {
-                    const { dataset: { target } } = element;
+                const elements = this.shadowRoot?.querySelectorAll<HTMLElement>("[data-target]") || [];
+                for (const element of elements) {
+                    const { dataset: { target, group } } = element;
                     // TODO -- validation
+                    // using group as a boolean
                     metadata.get(this)?.set(target || camelCase(element.localName), element);
                 }
             }
 
             connectedCallback() {
-                this.__queryElements();
+                this[query]();
                 // @ts-ignore fix typing
                 super.connectedCallback?.();
             }

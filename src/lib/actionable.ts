@@ -1,17 +1,17 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
 
-declare global {
-    interface Actionable extends HTMLElement {
-    }
-}
+import { camelCase } from "./strings";
 
 interface Constructor<T> {
     new(...args: any[]): T;
 }
 
+interface ActionableElement extends HTMLElement {
+}
+
 export function actionable<
-    T extends Constructor<Actionable>
+    T extends Constructor<ActionableElement>
 >(ctr: T): T {
     return class extends ctr {
         constructor(...args: any[]) {
@@ -23,10 +23,10 @@ export function actionable<
             for (const element of (elements || [])) {
                 const { dataset: { action } } = element;
                 // TODO -- validation
-                const [/* tagName, */ type, name = "handleEvent"] = (action as string).split(".");
+                const [/* tagName, */ type, name = "handle-event"] = (action as string).split(".");
                 element[!remove ? "addEventListener" : "removeEventListener"](
                     type,
-                    (this[name as keyof typeof this] as EventListener).bind(this)
+                    (this[camelCase(name) as keyof typeof this] as EventListener).bind(this)
                 );
             }
         }

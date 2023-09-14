@@ -6,14 +6,14 @@ interface Constructor<T> {
 }
 
 declare global {
-    interface Forable extends HTMLElement {
+    interface ForableElement extends HTMLElement {
         htmlFor?: string;
         forElementChangedCallback(element: Element): Promise<void>;
     }
 }
 
 export function forable<
-    T extends Constructor<Forable>
+    T extends Constructor<ForableElement>
 >(ctr: T): T {
     return class extends ctr {
         constructor(...args: any[]) {
