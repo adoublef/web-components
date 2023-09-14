@@ -19,7 +19,7 @@ export function actionable<
         }
 
         __eventListeners(remove = false) {
-            const elements = this.shadowRoot?.querySelectorAll<HTMLElement>("[data-action]");
+            const elements = (this.shadowRoot || this).querySelectorAll<HTMLElement>("[data-action]");
             for (const element of (elements || [])) {
                 const { dataset: { action } } = element;
                 // TODO -- validation

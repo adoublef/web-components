@@ -20,7 +20,7 @@
     <section>
         <effect-plugin id="gain">
             <template shadowRootMode="open">
-                <input type="range">
+                <input type="range" data-action="input">
                 <output><code data-target>000</code></output>
             </template>
         </effect-plugin>
@@ -41,9 +41,7 @@
                     </template>
                 </follow-user>
                 <block-user>
-                    <template shadowRootMode="open">
-                        <button data-action="click.block-user">block</button>
-                    </template>
+                    <button data-action="click.block-user">block</button>
                 </block-user>
             </template>
         </user-row>

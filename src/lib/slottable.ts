@@ -33,7 +33,7 @@ export function createSlottable() {
                     metadata.set(this, new Map());
                 }
                 // continue...
-                const slots = this.shadowRoot?.querySelectorAll<HTMLSlotElement>("slot") || [];
+                const slots = (this.shadowRoot || this).querySelectorAll<HTMLSlotElement>("slot") || [];
                 for (const slot of slots) {
                     // TODO -- validation
                     // using group as a boolean

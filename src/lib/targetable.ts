@@ -12,6 +12,7 @@ interface TargetableElement extends HTMLElement {
 
 export function createTargetable() {
     const metadata = new WeakMap<
+        // NOTE -- map to Set<Element>
         TargetableElement, Map<string | symbol, Element | Element[] | null>
     >();
 
@@ -31,9 +32,9 @@ export function createTargetable() {
                     metadata.set(this, new Map());
                 }
                 // NOTE -- matches [data-target] & [data-target=key]
-                const elements = this.shadowRoot?.querySelectorAll<HTMLElement>("[data-target]") || [];
+                const elements = (this.shadowRoot || this).querySelectorAll<HTMLElement>("[data-target]") || [];
                 for (const element of elements) {
-                    const { dataset: { target, group } } = element;
+                    const { dataset: { target } } = element;
                     const elementName = target || camelCase(element.localName)
                     // TODO -- validation
                     // using group as a boolean

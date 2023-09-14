@@ -27,34 +27,45 @@ export class AudioClipElement extends HTMLElement {
 }
 customElements.define("audio-clip", AudioClipElement);
 const { targetable, target } = createTargetable();
-/* @actionable */
+@actionable
 @targetable
 export class EffectPluginElement extends HTMLElement {
     @target
-    declare code: HTMLElement | null;
+    declare code: HTMLElement;
 
+    // min
+
+    // max
+
+    // value
+
+    handleEvent(evt: InputEvent) { }
+
+    // try to get deconstruction working
     connectedCallback() {
-        this.code!.textContent = `001`;
+        this.code.textContent = `001`;
     }
 }
 customElements.define("effect-plugin", EffectPluginElement);
-/* ******************************************************************** */
+/* **** SLOTTABLE ***************************************************** */
 const { slottable, slot } = createSlottable();
 @slottable
 @targetable
 class HelloWorldElement extends HTMLElement {
+    // @target({ many: true })
     @target
     declare span: HTMLSpanElement;
 
     @slot
     declare greeting: HTMLSlotElement;
 
+    // try to get deconstruction working
     connectedCallback() {
         this.span.textContent = `${this.greeting.assignedNodes().length}`;
     }
 }
 customElements.define("hello-world", HelloWorldElement);
-/* ******************************************************************** */
+/* **** PROVIDABLE **************************************************** */
 const { providable } = createProvidable();
 
 const userIdContext = createContext("user-id", "123");
