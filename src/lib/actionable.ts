@@ -31,25 +31,16 @@ export function actionable<
             }
         }
 
-
-        static get observedAttributes(): string[] {
-            // @ts-ignore observedAttributes may or may not exist
-            return [...(ctr.observedAttributes || [])];
-        }
-
-
         connectedCallback() {
+            this.__eventListeners();
             // @ts-ignore fix typing
             super.connectedCallback?.();
-
-            this.__eventListeners();
         }
 
         disconnectedCallback() {
+            this.__eventListeners(true);
             // @ts-ignore fix typing
             super.disconnectedCallback?.();
-
-            this.__eventListeners(true);
         }
     };
 }
