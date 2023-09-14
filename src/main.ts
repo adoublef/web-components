@@ -31,7 +31,7 @@ export class BAElement extends HTMLElement {
     }
 
     handleEvent() {
-        alert(`This is ${!this.isValid ? "not " : ""}valid`);
+        alert(`This is ${!this.isValid ? "not valid" : "valid"}`);
     }
 }
 customElements.define("b-a", BAElement);
