@@ -19,15 +19,24 @@ export function actionable<
         }
 
         __eventListeners(remove = false) {
-            console.log(super.shadowRoot);
             const elements = this.shadowRoot?.querySelectorAll<HTMLElement>("[data-action]");
             for (const element of (elements || [])) {
                 const { dataset: { action } } = element;
                 // TODO -- validation
-                const [_tagName, type, name = "handleEvent"] = (action as string).split(".");
-                element[!remove ? "addEventListener" : "removeEventListener"](type, this[name as keyof this] as EventListener);
+                const [/* tagName, */ type, name = "handleEvent"] = (action as string).split(".");
+                element[!remove ? "addEventListener" : "removeEventListener"](
+                    type,
+                    (this[name as keyof typeof this] as EventListener).bind(this)
+                );
             }
         }
+
+
+        static get observedAttributes(): string[] {
+            // @ts-ignore observedAttributes may or may not exist
+            return [...(ctr.observedAttributes || [])];
+        }
+
 
         connectedCallback() {
             // @ts-ignore fix typing

@@ -34,7 +34,7 @@ export function loadable<
         }
 
         async __load(src: string) {
-            // dispatch loadstart
+            // cannot use this dispatch loadstart
             this.dispatchEvent(new Event("loadstart"));
             try {
                 // get `fetchPriority` to work
@@ -42,8 +42,8 @@ export function loadable<
                     priority: this.fetchpriority || "auto",
                     method: "get"
                 });
+                await this.load(res);
                 this.dispatchEvent(new Event("load"));
-                await super.load(res);
             } catch (error) {
                 this.dispatchEvent(new Event("error"));
             } finally {
