@@ -12,8 +12,8 @@ interface TargetableElement extends HTMLElement {
 
 export function createTargetable() {
     const metadata = new WeakMap<
-        // NOTE -- map to Set<Element>
-        TargetableElement, Map<string | symbol, Element | Element[] | null>
+        // NOTE -- use a queue
+        TargetableElement, Map<string | symbol, Array<Element | null>>
     >();
 
     function targetable<
@@ -34,11 +34,14 @@ export function createTargetable() {
                 // NOTE -- matches [data-target] & [data-target=key]
                 const elements = (this.shadowRoot || this).querySelectorAll<HTMLElement>("[data-target]") || [];
                 for (const element of elements) {
-                    const { dataset: { target, many } } = element;
-                    const elementName = target || camelCase(element.localName);
+                    const { dataset: { target } } = element;
+                    const elementName = camelCase(target || element.localName);
+                    if (!metadata.get(this)?.has(elementName)) {
+                        metadata.get(this)?.set(elementName, new Array());
+                    }
                     // TODO -- validation
                     // using group as a boolean
-                    metadata.get(this)?.set(elementName, element);
+                    metadata.get(this)?.get(elementName)?.push(element);
                 }
             }
 
@@ -54,11 +57,21 @@ export function createTargetable() {
         Object.defineProperty(proto, name, {
             get() {
                 // @ts-ignore type check this soon
-                return metadata.get(this)?.get(name);
+                return metadata.get(this)?.get(name)?.at(0);
             }
         });
     }
 
-    return { targetable, target };
+    function targetAll<T extends TargetableElement>(proto: T, name: keyof T) {
+        Object.defineProperty(proto, name, {
+            get() {
+                // filter null nodes from list until I figure out the weakRef stuff
+                // @ts-ignore type check this soon
+                return metadata.get(this)?.get(name) || [];
+            }
+        });
+    }
+
+    return { targetable, target, targetAll };
 }
 

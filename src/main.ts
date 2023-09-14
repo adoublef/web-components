@@ -1,4 +1,4 @@
-import { actionable, forable, loadable, createTargetable, createProvidable, createSlottable } from "./lib";
+import { actionable, forable, loadable, createTargetable, createSlottable } from "./lib";
 /* **** ACTIONABLE **************************************************** */
 export class AAElement extends HTMLElement {
 }
@@ -23,14 +23,25 @@ export class ACElement extends HTMLElement {
     }
 }
 customElements.define("a-c", ACElement);
-/* **** ACTIONABLE **************************************************** */
 /* **** TARGETABLE **************************************************** */
-const { targetable, target } = createTargetable();
+const { targetable, target, targetAll } = createTargetable();
+@targetable
+@actionable
 export class BAElement extends HTMLElement {
-    @target
-    declare validators: BBElement[];
+    @targetAll
+    declare bb: BBElement[];
+
+    get isValid() {
+        // Every user must be valid!
+        return this.bb.every(b => b.isValid);
+    }
+
+    handleEvent() {
+        alert(`This is ${!this.isValid ? "not " : ""}valid`);
+    }
 }
 customElements.define("b-a", BAElement);
+@targetable
 export class BBElement extends HTMLElement {
     @target
     declare read: HTMLInputElement;
@@ -38,18 +49,16 @@ export class BBElement extends HTMLElement {
     @target
     declare write: HTMLInputElement;
 
-    get valid() {
+    get isValid() {
         return this.read.checked || this.write.checked;
     }
 }
 customElements.define("b-b", BBElement);
-/* **** TARGETABLE **************************************************** */
 /* **** SLOTTABLE ***************************************************** */
 const { slottable, slot } = createSlottable();
 @slottable
 @targetable
 class CAElement extends HTMLElement {
-    // @target({ many: true })
     @target
     declare span: HTMLSpanElement;
 
@@ -62,7 +71,6 @@ class CAElement extends HTMLElement {
     }
 }
 customElements.define("c-a", CAElement);
-/* **** SLOTTABLE ***************************************************** */
 /* ******************************************************************** */
 const baseContext = new AudioContext({ latencyHint: "interactive" });
 @actionable
