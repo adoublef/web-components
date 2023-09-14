@@ -1,14 +1,7 @@
 import { actionable, forable, loadable, createTargetable, createProvidable, createSlottable } from "./lib";
 import { ContextEvent, createContext } from "./lib/context";
-
-interface Constructor<T> {
-    new(...args: any[]): T;
-}
-
-const baseContext = new AudioContext({
-    latencyHint: "interactive",
-});
-
+/* ******************************************************************** */
+const baseContext = new AudioContext({ latencyHint: "interactive" });
 @actionable
 @forable
 @loadable
@@ -33,9 +26,7 @@ export class AudioClipElement extends HTMLElement {
     }
 }
 customElements.define("audio-clip", AudioClipElement);
-
 const { targetable, target } = createTargetable();
-
 /* @actionable */
 @targetable
 export class EffectPluginElement extends HTMLElement {
@@ -68,12 +59,6 @@ const { providable } = createProvidable();
 
 const userIdContext = createContext("user-id", "123");
 let provideAlready = false;
-
-/* 
-https://github.com/blikblum/wc-context/blob/master/core.js
-https://github.com/blikblum/wc-context/blob/master/mixin.js
-*/
-
 @providable
 export class UserRowElement extends HTMLElement {
     userId = "123";

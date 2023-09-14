@@ -21,36 +21,38 @@ export function createSlottable() {
     function slottable<
         T extends Constructor<SlottableElement>
     >(ctr: T) {
-        const query = Symbol();
+        const querySelectorAll = Symbol();
 
         return class extends ctr {
             constructor(...args: any[]) {
                 super(...args);
             }
 
-            [query]() {
+            [querySelectorAll]() {
                 if (!metadata.has(this)) {
                     metadata.set(this, new Map());
                 }
                 // continue...
-                const elements = this.shadowRoot?.querySelectorAll<HTMLSlotElement>("slot") || [];
-                for (const element of elements) {
-                    const { name } = element;
+                const slots = this.shadowRoot?.querySelectorAll<HTMLSlotElement>("slot") || [];
+                for (const slot of slots) {
                     // TODO -- validation
                     // using group as a boolean
-                    metadata.get(this)?.set(camelCase(name) || mainSlot, element);
+                    const slotName = camelCase(slot.name) || mainSlot;
+                    metadata.get(this)?.set(slotName, slot);
                 }
             }
 
             connectedCallback() {
-                this[query]();
+                this[querySelectorAll]();
                 // @ts-ignore fix typing
                 super.connectedCallback?.();
             }
         };
     }
 
-    function slot(proto: object, name: PropertyKey) {
+    function slot<
+        T extends SlottableElement
+    >(proto: T, name: PropertyKey) {
         Object.defineProperty(proto, name, {
             get() {
                 // @ts-ignore type check this soon
