@@ -13,12 +13,15 @@ interface ActionableElement extends HTMLElement {
 export function actionable<
     T extends Constructor<ActionableElement>
 >(ctr: T): T {
+    const eventListeners = Symbol();
+
+
     return class extends ctr {
         constructor(...args: any[]) {
             super(...args);
         }
 
-        __eventListeners(method: "addEventListener" | "removeEventListener" = "addEventListener") {
+        [eventListeners](method: "addEventListener" | "removeEventListener" = "addEventListener") {
             const elements = (this.shadowRoot || this).querySelectorAll<HTMLElement>("[data-action]");
             for (const element of (elements || [])) {
                 const { dataset: { action } } = element;
@@ -30,13 +33,13 @@ export function actionable<
         }
 
         connectedCallback() {
-            this.__eventListeners();
+            this[eventListeners]();
             // @ts-ignore fix typing
             super.connectedCallback?.();
         }
 
         disconnectedCallback() {
-            this.__eventListeners("removeEventListener");
+            this[eventListeners]("removeEventListener");
             // @ts-ignore fix typing
             super.disconnectedCallback?.();
         }
