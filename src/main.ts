@@ -61,11 +61,13 @@ class CAElement extends HTMLElement {
 
     // try to get deconstruction working
     connectedCallback() {
-        this.span.textContent = `${this.greeting.assignedNodes().length}`;
+        const { span, greeting } = this;
+        span.textContent = `${greeting.assignedNodes().length}`;
     }
 }
 customElements.define("c-a", CAElement);
 /* **** DEMO ********************************************************** */
+
 const baseContext = new AudioContext({ latencyHint: "interactive" });
 @actionable
 @forable
@@ -107,7 +109,8 @@ export class EffectPluginElement extends HTMLElement {
 
     // try to get deconstruction working
     connectedCallback() {
-        this.code.textContent = `001`;
+        const { code } = this;
+        code.textContent = `001`;
     }
 }
 customElements.define("effect-plugin", EffectPluginElement);
