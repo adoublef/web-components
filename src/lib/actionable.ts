@@ -13,7 +13,7 @@ interface ActionableElement extends HTMLElement {
 export function actionable<
     T extends Constructor<ActionableElement>
 >(ctr: T): T {
-    const eventListeners = Symbol();
+    const handleEventListeners = Symbol();
 
 
     return class extends ctr {
@@ -21,25 +21,25 @@ export function actionable<
             super(...args);
         }
 
-        [eventListeners](method: "addEventListener" | "removeEventListener" = "addEventListener") {
+        [handleEventListeners](method: "addEventListener" | "removeEventListener" = "addEventListener") {
             const elements = (this.shadowRoot || this).querySelectorAll<HTMLElement>("[data-action]");
             for (const element of (elements || [])) {
                 const { dataset: { action } } = element;
                 // TODO -- validation
-                const [/* tagName, */ type, name = "handle-event"] = (action as string).split(".");
+                const [type, name = "handle-event"] = (action as string).split(".");
                 element[method](type,
                     (this[camelCase(name) as keyof typeof this] as EventListener).bind(this));
             }
         }
 
         connectedCallback() {
-            this[eventListeners]();
+            this[handleEventListeners]();
             // @ts-ignore fix typing
             super.connectedCallback?.();
         }
 
         disconnectedCallback() {
-            this[eventListeners]("removeEventListener");
+            this[handleEventListeners]("removeEventListener");
             // @ts-ignore fix typing
             super.disconnectedCallback?.();
         }

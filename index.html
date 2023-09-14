@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + TS</title>
     <style>
+        :root {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
         @media (prefers-color-scheme: dark) {
             body {
                 background: #000;
@@ -17,49 +21,77 @@
 </head>
 
 <body>
-    <section>
-        <effect-plugin id="gain">
-            <template shadowRootMode="open">
-                <input type="range" data-action="input">
-                <output><code data-target>000</code></output>
-            </template>
-        </effect-plugin>
-        <hr>
-        <audio-clip src="/snare.wav" for="gain">
-            <template shadowRootMode="open">
-                <button data-action="click">play</button>
-            </template>
-        </audio-clip>
-    </section>
-    <hr>
-    <section>
-        <user-row>
-            <template shadowRootMode="open">
-                <follow-user>
+    <main>
+        <article>
+            <header>
+                <h1>Web Components</h1>
+                <p>A small utility for building web components</p>
+            </header>
+            <section id="actionable">
+                <header>
+                    <h2>The <code>actionable</code> trait</h2>
+                </header>
+                <a-a>
                     <template shadowRootMode="open">
-                        <button data-action="click.followUser">follow</button>
+                        <a-b>
+                            <template shadowRootMode="open">
+                                <button data-action="click.followUser">follow</button>
+                            </template>
+                        </a-b>
+                        <a-c>
+                            <button data-action="click.block-user">block</button>
+                        </a-c>
+                        </template>
+                </a-a>
+                </section>
+                <section id="targetable">
+                    <header>
+                        <h2>The <code>targetable</code> trait</h2>
+                    </header>
+                    <b-a>
+                        <b-b data-target="validators">
+                            <input type="checkbox" data-target="read">
+                            <input type="checkbox" data-target="write">
+                        </b-b>
+                        <b-b data-target="validators">
+                            <input type="checkbox" data-target="read">
+                            <input type="checkbox" data-target="write">
+                        </b-b>
+                    </b-a>
+                </section>
+            <section id="slottable">
+                <header>
+                    <h2>The <code>slottable</code> trait</h2>
+                </header>
+                <c-a>
+                    <template shadowRootMode="open">
+                        <slot name="greeting"></slot>
+                        <p>We have <span data-target>0</span> greeting</p>
                     </template>
-                </follow-user>
-                <block-user>
-                    <button data-action="click.block-user">block</button>
-                </block-user>
-            </template>
-        </user-row>
-    </section>
-    <hr>
-    <section>
-        <p>Example of the <code>slottable</code> ability</p>
-        <hello-world>
-            <template shadowRootMode="open">
-                <slot name="greeting"></slot>
-                <p>We have <span data-target>0</span> greeting</p>
-            </template>
-            <!-- light dom -->
-            <p slot="greeting">Hello World!</p>
-            <p slot="greeting">Hola Mundo!</p>
-            <p slot="greeting">Bonjour le monde!</p>
-        </hello-world>
-    </section>
+                    <p slot="greeting">Hello World!</p>
+                    <p slot="greeting">Hola Mundo!</p>
+                    <p slot="greeting">Bonjour le monde!</p>
+                </c-a>
+                </section>
+                <section id="demo">
+                    <header>
+                        <h2>Demo using the Web Audio API</h2>
+                    </header>
+                    <effect-plugin id="gain">
+                        <template shadowRootMode="open">
+                            <input type="range" data-action="input">
+                            <output><code data-target>000</code></output>
+                        </template>
+                    </effect-plugin>
+                    <hr>
+                    <audio-clip src="/snare.wav" for="gain">
+                        <template shadowRootMode="open">
+                            <button data-action="click">play</button>
+                        </template>
+                    </audio-clip>
+                </section>
+        </article>
+        </main>
     <script type="module" src="/src/polyfil.ts"></script>
     <script type="module" src="/src/main.ts"></script>
 </body>

@@ -34,7 +34,7 @@ export function createTargetable() {
                 // NOTE -- matches [data-target] & [data-target=key]
                 const elements = (this.shadowRoot || this).querySelectorAll<HTMLElement>("[data-target]") || [];
                 for (const element of elements) {
-                    const { dataset: { target } } = element;
+                    const { dataset: { target, many } } = element;
                     const elementName = target || camelCase(element.localName);
                     // TODO -- validation
                     // using group as a boolean
@@ -50,9 +50,7 @@ export function createTargetable() {
         };
     }
 
-    function target<
-        T extends TargetableElement
-    >(proto: T, name: keyof T) {
+    function target<T extends TargetableElement>(proto: T, name: keyof T) {
         Object.defineProperty(proto, name, {
             get() {
                 // @ts-ignore type check this soon
@@ -63,3 +61,4 @@ export function createTargetable() {
 
     return { targetable, target };
 }
+
