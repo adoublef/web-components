@@ -35,7 +35,7 @@ export function createTargetable() {
                 const elements = (this.shadowRoot || this).querySelectorAll<HTMLElement>("[data-target]") || [];
                 for (const element of elements) {
                     const { dataset: { target } } = element;
-                    const elementName = target || camelCase(element.localName)
+                    const elementName = target || camelCase(element.localName);
                     // TODO -- validation
                     // using group as a boolean
                     metadata.get(this)?.set(elementName, element);

@@ -18,16 +18,14 @@ export function actionable<
             super(...args);
         }
 
-        __eventListeners(remove = false) {
+        __eventListeners(method: "addEventListener" | "removeEventListener" = "addEventListener") {
             const elements = (this.shadowRoot || this).querySelectorAll<HTMLElement>("[data-action]");
             for (const element of (elements || [])) {
                 const { dataset: { action } } = element;
                 // TODO -- validation
                 const [/* tagName, */ type, name = "handle-event"] = (action as string).split(".");
-                element[!remove ? "addEventListener" : "removeEventListener"](
-                    type,
-                    (this[camelCase(name) as keyof typeof this] as EventListener).bind(this)
-                );
+                element[method](type,
+                    (this[camelCase(name) as keyof typeof this] as EventListener).bind(this));
             }
         }
 
@@ -38,7 +36,7 @@ export function actionable<
         }
 
         disconnectedCallback() {
-            this.__eventListeners(true);
+            this.__eventListeners("removeEventListener");
             // @ts-ignore fix typing
             super.disconnectedCallback?.();
         }
