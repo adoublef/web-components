@@ -9,13 +9,20 @@
 </head>
 
 <body>
-    <hello-world src="/snare.wav">
+<effect-plugin>
+    <template shadowRootMode="open">
+        <input type="range">
+        <output><code data-target>000</code></output>
+    </template>
+</effect-plugin>
+<hr>
+<audio-clip src="/snare.wav">
         <template shadowRootMode="open">
             <button data-action="click">play</button>
         </template>
-    </hello-world>
+    </audio-clip>
     <hr>
-    <div id="ident">
+    <div id="a">
         <p>I am identable</p>
     </div>
     <script type="module" src="/src/polyfil.ts"></script>

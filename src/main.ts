@@ -1,6 +1,4 @@
-import { loadable } from "./lib/loadable";
-import { forable } from "./lib/forable";
-import { actionable } from "./lib/actionable.ts";
+import { actionable, forable, loadable, createTargetable } from "./lib";
 
 interface Constructor<T> {
     new(...args: any[]): T;
@@ -13,12 +11,11 @@ const baseContext = new AudioContext({
 @actionable
 @forable
 @loadable
-export class HelloWorldElement extends HTMLElement {
-    buffer: AudioBuffer | undefined
+export class AudioClipElement extends HTMLElement {
+    buffer: AudioBuffer | undefined;
 
     async load(response: Response): Promise<void> {
         const arrayBuffer = await response.arrayBuffer();
-        console.log(arrayBuffer);
         this.buffer = await baseContext.decodeAudioData(arrayBuffer);
     }
 
@@ -31,8 +28,21 @@ export class HelloWorldElement extends HTMLElement {
         const sample = new AudioBufferSourceNode(baseContext, { buffer });
 
         sample.connect(baseContext.destination);
-        sample.start();
+        sample.start(baseContext.currentTime);
     }
 }
+customElements.define("audio-clip", AudioClipElement);
 
-customElements.define("hello-world", HelloWorldElement);
+const { targetable, target } = createTargetable();
+
+/* @actionable */
+@targetable
+export class EffectPluginElement extends HTMLElement {
+    @target
+    declare code: HTMLElement | null;
+
+    connectedCallback() {
+        this.code!.textContent = `001`;
+    }
+}
+customElements.define("effect-plugin", EffectPluginElement);
